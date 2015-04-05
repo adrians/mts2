@@ -1,0 +1,15 @@
+#from eclipse
+/.project
+/.classpath
+/.settings/
+/bin/
+
+#from intellij
+/*.iml
+/.idea/
+/out/
+
+# temporary files added by LiveGraph
+/session.*
+/autoUpdate.lguds
+/log.lgd
