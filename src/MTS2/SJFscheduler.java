@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
  */
 public class SJFscheduler implements Scheduler {
 
-	private PriorityQueue<JobMessage> tasks;
+	private PriorityQueue<Job> tasks;
 
 	public SJFscheduler() {
 		this.init();
@@ -17,14 +17,14 @@ public class SJFscheduler implements Scheduler {
 
 	@Override
 	public void init() {
-		this.tasks = new PriorityQueue<JobMessage>(1, new Comparator<JobMessage>()
+		this.tasks = new PriorityQueue<Job>(1, new Comparator<Job>()
 				{
 			/**
 			 * Sort jobs by length
 			 * Extend this class for different comparisons
 			 */
 			@Override
-			public int compare(JobMessage o1, JobMessage o2) {
+			public int compare(Job o1, Job o2) {
 				if (o1.getLength() < o2.getLength())
 				{
 					return 1;
@@ -40,19 +40,19 @@ public class SJFscheduler implements Scheduler {
 	}
 
 	@Override
-	public void schedule(JobMessage job) {
+	public void schedule(Job job) {
 		//by default, it can be scheduled
 		tasks.add(job);
 	}
 
 	@Override
-	public JobMessage processAt(long processingTimestamp) {
+	public Job processAt(long processingTimestamp) {
 		if (tasks.isEmpty()) {
 			return null;
 		}
 		
 		//process a task
-		JobMessage currentJob = tasks.remove();
+		Job currentJob = tasks.remove();
 		currentJob.setStartProcessingTimestamp(processingTimestamp);
 
 		System.out.println("Processed job with length " + currentJob.getLength() + "at timestamp: " + processingTimestamp);
@@ -68,7 +68,7 @@ public class SJFscheduler implements Scheduler {
 	}
 
 	@Override
-	public JobMessage deleteCurrentJob() {
+	public Job deleteCurrentJob() {
 		if (tasks.isEmpty()) {
 			return null;
 		}

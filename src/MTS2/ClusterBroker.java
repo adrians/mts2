@@ -123,7 +123,7 @@ public abstract class ClusterBroker extends BaseNode {
 			try {
 				this.simulationManager.sendMessage(this.getDestinationNodeId(), currentJob);
 
-						System.out.println("Generated task of length " + currentJob.getLength() +
+						System.out.println("Generated task of length " + currentJob.getJob().getLength() +
 								" for timestamp " + currentJob.getTimestamp());
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -4,8 +4,9 @@ public class Job {
     protected long length;
     protected long startProcessingTimestamp;
     protected long finishProcessingTimestamp;
+    protected long generatedTimestamp;
 
-    public Job(long length){
+    public Job(long length, long generatedTimestamp){
         this.length = length;
     }
 
@@ -21,6 +22,10 @@ public class Job {
         return finishProcessingTimestamp;
     }
 
+    public long getGeneratedTimestamp() {
+        return generatedTimestamp;
+    }
+
     public void setStartProcessingTimestamp(long startProcessingTimestamp) {
         this.startProcessingTimestamp = startProcessingTimestamp;
     }
@@ -29,4 +34,7 @@ public class Job {
         this.finishProcessingTimestamp = finishProcessingTimestamp;
     }
 
+    public void setGeneratedTimestamp(long generatedTimestamp) {
+        this.generatedTimestamp = generatedTimestamp;
+    }
 }
