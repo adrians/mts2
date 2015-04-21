@@ -18,8 +18,8 @@ public class Node extends BaseNode {
 
 	@Override
 	public void processMessage(BaseMessage msg) {
-		if (msg instanceof Job) {
-			Job currentJob = (Job)msg;
+		if (msg instanceof JobMessage) {
+			JobMessage currentJob = (JobMessage)msg;
 			schedule(currentJob, msg.getTimestamp());
 		} else if (msg instanceof Event) {
 			Event currentEvent = (Event)msg;
@@ -31,7 +31,7 @@ public class Node extends BaseNode {
 		System.out.println("Node " + getNodeId() + " woke up at event timestamp = " + timestamp);
 	}
 
-	public void schedule(Job job, long timestamp) {
+	public void schedule(JobMessage job, long timestamp) {
 		scheduler.schedule(job);
 		scheduler.processAt(timestamp);
 	}

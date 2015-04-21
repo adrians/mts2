@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
  */
 public class FCFSscheduler implements Scheduler {
 
-	private PriorityQueue<Job> tasks;
+	private PriorityQueue<JobMessage> tasks;
 
 	public FCFSscheduler() {
 		this.init();
@@ -17,14 +17,14 @@ public class FCFSscheduler implements Scheduler {
 
 	@Override
 	public void init() {
-		this.tasks = new PriorityQueue<Job>(1, new Comparator<Job>()
+		this.tasks = new PriorityQueue<JobMessage>(1, new Comparator<JobMessage>()
 				{
 			/**
 			 * Sort jobs on timestamps
 			 * Extend this class for different comparisons
 			 */
 			@Override
-			public int compare(Job o1, Job o2) {
+			public int compare(JobMessage o1, JobMessage o2) {
 				if (o1.getTimestamp() < o2.getTimestamp())
 				{
 					return 1;
@@ -40,19 +40,19 @@ public class FCFSscheduler implements Scheduler {
 	}
 
 	@Override
-	public void schedule(Job job) {
+	public void schedule(JobMessage job) {
 		//by default, it can be scheduled
 		tasks.add(job);
 	}
 
 	@Override
-	public Job processAt(long processingTimestamp) {
+	public JobMessage processAt(long processingTimestamp) {
 		if (tasks.isEmpty()) {
 			return null;
 		}
 		
 		//process a task
-		Job currentJob = tasks.remove();
+		JobMessage currentJob = tasks.remove();
 		currentJob.setStartProcessingTimestamp(processingTimestamp);
 
 		System.out.println("Processed job with length " + currentJob.getLength() + " at timestamp: " + processingTimestamp);
@@ -68,11 +68,11 @@ public class FCFSscheduler implements Scheduler {
 	}
 
 	@Override
-	public Job deleteCurrentJob() {
-		if (this.tasks.isEmpty()) {
+	public JobMessage deleteCurrentJob() {
+		if (tasks.isEmpty()) {
 			return null;
 		}
 
-		return this.tasks.remove();
+		return tasks.remove();
 	}
 }

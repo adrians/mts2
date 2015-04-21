@@ -3,8 +3,8 @@ package MTS2;
 public interface Scheduler {
 
 	void init();
-	void schedule(Job job);
-	Job processAt(long processingTimestamp);
-	Job deleteCurrentJob();
+	void schedule(JobMessage job);
+	JobMessage processAt(long processingTimestamp);
+	JobMessage deleteCurrentJob();
 	long getLoading();
 }

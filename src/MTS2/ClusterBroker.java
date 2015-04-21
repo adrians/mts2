@@ -119,7 +119,7 @@ public abstract class ClusterBroker extends BaseNode {
 				continue;
 			}
 
-			Job currentJob = this.makeJob(timestamp);
+			JobMessage currentJob = this.makeJob(timestamp);
 			try {
 				this.simulationManager.sendMessage(this.getDestinationNodeId(), currentJob);
 
@@ -146,13 +146,13 @@ public abstract class ClusterBroker extends BaseNode {
 		return node;
 	}
 
-	private Job makeJob(long timestamp) {
-		Job currentJob = null;
+	private JobMessage makeJob(long timestamp) {
+		JobMessage currentJob = null;
 		long length = this.getDistribution().getJobLength();
 
 		try {
 			Constructor<?> constructor = this.jobType.getConstructor(long.class, long.class);
-			currentJob = (Job) constructor.newInstance(length, timestamp);
+			currentJob = (JobMessage) constructor.newInstance(length, timestamp);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
