@@ -36,7 +36,7 @@ public abstract class ClusterBroker extends BaseNode {
 	}
 
 	protected void processEvent0(ClusterBrokerEvent0 event) {
-		ClusterBrokerEvent0 nextEvent = null;
+		ClusterBrokerEvent0 nextEvent;
 
 		if (event.getTimestamp() >= event.getTotalTime()) {
 			return;
@@ -57,7 +57,7 @@ public abstract class ClusterBroker extends BaseNode {
 	}
 
 	protected void processEvent1(ClusterBrokerEvent1 event) {
-		ClusterBrokerEvent1 nextEvent = null;
+		ClusterBrokerEvent1 nextEvent;
 		
 		if (event.getTotalJobs() <= 0) {
 			return;
@@ -88,7 +88,7 @@ public abstract class ClusterBroker extends BaseNode {
 	{
 		try {
 			this.simulationManager.sendMessage(this.getNodeId(),
-					new ClusterBrokerEvent0(numJobsEachTime, periodTime, new Long(totalTime), 0));
+					new ClusterBrokerEvent0(numJobsEachTime, periodTime, totalTime, 0));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -111,7 +111,7 @@ public abstract class ClusterBroker extends BaseNode {
 	}
 
 	public void distributeJobs(long totalJobs, long timestamp) {
-		BaseNode currentNode = null;
+		BaseNode currentNode;
 
 		for (long i = 0; i < totalJobs; i++) {
 			currentNode = getNextNode();
@@ -132,7 +132,7 @@ public abstract class ClusterBroker extends BaseNode {
 	}
 
 	private BaseNode getNextNode() {
-		BaseNode node = null;
+		BaseNode node;
 
 		while(true) {
 			node = this.simulationManager.getNode(this.getDestinationNodeId());

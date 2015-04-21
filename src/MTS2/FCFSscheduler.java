@@ -17,7 +17,7 @@ public class FCFSscheduler implements Scheduler {
 
 	@Override
 	public void init() {
-		this.tasks = new PriorityQueue<Job>(1, new Comparator<Job>()
+		this.tasks = new PriorityQueue<>(1, new Comparator<Job>()
 				{
 			/**
 			 * Sort jobs on timestamps

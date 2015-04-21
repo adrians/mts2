@@ -23,7 +23,7 @@ public class MTCLoadBalancingAlgorithm {
 		//add workers
 		for (int i = 1; i < totalNodes; i++) {
 			DoubleRoleNode worker = new DoubleRoleNode(i, brokerId, totalNodes, false);
-			long workerId = simulation.addNode(worker);
+			simulation.addNode(worker);
 		}
 
 		//add broker that communicates with the distributor

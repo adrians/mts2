@@ -97,7 +97,7 @@ public class DoubleRoleNode extends Node {
 						e.printStackTrace();
 					}
 				} else {
-					Job currentJob = null;
+					Job currentJob;
 
 					while ((currentJob = this.scheduler.deleteCurrentJob()) != null) {
 						JobMessage job = new JobMessage(currentJob.getLength(),

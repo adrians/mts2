@@ -10,7 +10,7 @@ public class DHToverlay implements Overlay {
 	private int totalNodes;
 	
 	public DHToverlay(long nodeId, int totalNodes) {
-		this.neighbours = new HashMap<Integer, Long>(1);
+		this.neighbours = new HashMap<>(1);
 		this.totalNodes = totalNodes;
 		this.nextId = 0;
 		this.computeNeighbours(nodeId, totalNodes);

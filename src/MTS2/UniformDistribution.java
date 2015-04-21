@@ -1,7 +1,6 @@
 package MTS2;
 public final class UniformDistribution implements Distribution {
 
-	private int range;
 	private int min = 0;
 	private int max = 20;
 	
@@ -18,7 +17,7 @@ public final class UniformDistribution implements Distribution {
 	
 	@Override
 	public long getJobLength() {
-		this.range = Math.abs(max - min);
+		long range = Math.abs(max - min);
 		return (long)(Math.random() * range) + (min <= max ? min : max) + 1;
 	}
 }
