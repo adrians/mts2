@@ -8,6 +8,7 @@ public class Job {
 
     public Job(long length, long generatedTimestamp){
         this.length = length;
+        this.generatedTimestamp = generatedTimestamp;
     }
 
     public long getLength() {
