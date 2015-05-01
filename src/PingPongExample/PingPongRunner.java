@@ -2,6 +2,12 @@ package PingPongExample;
 
 import Backend.SimulationManager;
 
+/**
+ * Simple example for using the backend.
+ *
+ * When a node receives a message, print to the console a text, then reply back with a decremented message.
+ * Everything stops when the counter inside the message reaches 0.
+ */
 class PingPongRunner {
 
 	public static void main(String[] args) {
