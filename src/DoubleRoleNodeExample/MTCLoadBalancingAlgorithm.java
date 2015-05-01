@@ -37,6 +37,10 @@ public class MTCLoadBalancingAlgorithm {
 		broker.generateDynamicJobsUntilThreshold(10000, 1, totalJobs);
 		
 		//start
-		simulation.runContinous();
+		try {
+			simulation.runContinous();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

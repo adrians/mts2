@@ -99,7 +99,7 @@ public class SimulationManager {
 		buildNodes(1, c);
 	}
 
-	public void runStep() {
+	public void runStep() throws Exception {
 		int nodeCounter = 0;
 		int messageCounter = 0;
 
@@ -145,17 +145,13 @@ public class SimulationManager {
 		}
 
 		if(PARALLEL_MODE_ENABLED) {
-			try {
-				/* Wait for the threads to finish */
-				for(int i = 0; i < NUM_THREADS; ++i) {
-					currentStepResults.get(i).get();
-				}
-				/* Drain the generated events into the main event list */
-				eventList.addAll(tempEventList);
-				tempEventList.clear();
-			} catch (Exception e) {
-				e.printStackTrace();
+			/* Wait for the threads to finish */
+			for(int i = 0; i < NUM_THREADS; ++i) {
+				currentStepResults.get(i).get();
 			}
+			/* Drain the generated events into the main event list */
+			eventList.addAll(tempEventList);
+			tempEventList.clear();
 		}
 
 		if(eventList.isEmpty()){
@@ -175,7 +171,7 @@ public class SimulationManager {
 		}
 	}
 
-	public long runContinous() {
+	public long runContinous() throws Exception {
 		long steps = 0;
 
 		while (!simulationFinishedFlag) {
@@ -197,7 +193,8 @@ public class SimulationManager {
 			throw new Exception("Sent message to unexisting node");
 		}
 		if (message.getTimestamp() <= simulationStep) {
-			throw new Exception("Causality violation!");
+			throw new Exception("Causality violation! Cannot send message to ts:"+message.getTimestamp()+
+								" while in ts:"+simulationStep);
 		}
 	}
 

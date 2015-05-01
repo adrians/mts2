@@ -33,6 +33,10 @@ public class MTS2 {
 		broker.generateDynamicJobs(3, 5, 10000);
 		broker2.generateDynamicJobsUntilThreshold(4, 4, 10000);
 
-		simulation.runContinous();
+		try {
+			simulation.runContinous();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
