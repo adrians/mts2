@@ -21,8 +21,6 @@ public class SimulationManager {
 	/*
 	 * Variables required for parallel execution
 	 */
-	static private final boolean PARALLEL_MODE_ENABLED = false;
-	static private final int NUM_THREADS = 2;
 	private ExecutorService executor;
 	private List<Future<Void>> currentStepResults;
 	private List<ExecWrapper> currentExecWrappers;
@@ -31,7 +29,6 @@ public class SimulationManager {
 	/*
 	 * Variables required for data visualisation
 	 */
-	static private final boolean VISUALISATION_ENABLED = true;
 	private PrintWriter logger;
 
 	private SimulationManager() {
@@ -41,14 +38,14 @@ public class SimulationManager {
 		simulationStep = -1;
 		simulationFinishedFlag = false;
 
-		if(PARALLEL_MODE_ENABLED) {
-			executor = Executors.newFixedThreadPool(NUM_THREADS);
-			currentExecWrappers = new ArrayList<>(NUM_THREADS);
-			currentStepResults = new ArrayList<>(NUM_THREADS);
+		if(BackendSettings.PARALLEL_MODE_ENABLED) {
+			executor = Executors.newFixedThreadPool(BackendSettings.NUM_THREADS);
+			currentExecWrappers = new ArrayList<>(BackendSettings.NUM_THREADS);
+			currentStepResults = new ArrayList<>(BackendSettings.NUM_THREADS);
 			tempEventList = new ConcurrentLinkedQueue<>();
 		}
 
-		if(VISUALISATION_ENABLED) {
+		if(BackendSettings.VISUALISATION_ENABLED) {
 			try {
 				logger = new PrintWriter("log.lgd");
 				/* write the header for the format documented at
@@ -110,11 +107,11 @@ public class SimulationManager {
 		simulationStep = eventList.first().getTimestamp();
 
 		/* Cleanup & initialisation for parallel mode*/
-		if(PARALLEL_MODE_ENABLED) {
+		if(BackendSettings.PARALLEL_MODE_ENABLED) {
 			currentExecWrappers.clear();
 			currentStepResults.clear();
 
-			for (int i = 0; i < NUM_THREADS; ++i) {
+			for (int i = 0; i < BackendSettings.NUM_THREADS; ++i) {
 				currentExecWrappers.add(new ExecWrapper(simulationStep));
 			}
 		}
@@ -124,29 +121,29 @@ public class SimulationManager {
 			messageCounter++; // ToDo: useless at the moment
 			SimulationEvent s = eventList.pollFirst();
 			nodeCounter++;
-			if( PARALLEL_MODE_ENABLED ){
-				currentExecWrappers.get(nodeCounter % NUM_THREADS).addHostId(s.getNodeId());
+			if( BackendSettings.PARALLEL_MODE_ENABLED ){
+				currentExecWrappers.get(nodeCounter % BackendSettings.NUM_THREADS).addHostId(s.getNodeId());
 			} else {
 				getNode(s.getNodeId()).update(simulationStep);
 			}
 		}
 
 		/* Start the threads */
-		if(PARALLEL_MODE_ENABLED) {
-			for (int i = 0; i < NUM_THREADS; ++i) {
+		if(BackendSettings.PARALLEL_MODE_ENABLED) {
+			for (int i = 0; i < BackendSettings.NUM_THREADS; ++i) {
 				currentStepResults.add(executor.submit(currentExecWrappers.get(i)));
 			}
 		}
 
 		/* Write logging data */
-		if(VISUALISATION_ENABLED){
+		if(BackendSettings.VISUALISATION_ENABLED){
 			logger.println(simulationStep + "," + messageCounter + "," + nodeCounter);
 			logger.flush();
 		}
 
-		if(PARALLEL_MODE_ENABLED) {
+		if(BackendSettings.PARALLEL_MODE_ENABLED) {
 			/* Wait for the threads to finish */
-			for(int i = 0; i < NUM_THREADS; ++i) {
+			for(int i = 0; i < BackendSettings.NUM_THREADS; ++i) {
 				currentStepResults.get(i).get();
 			}
 			/* Drain the generated events into the main event list */
@@ -162,11 +159,11 @@ public class SimulationManager {
 	public void finishSimulation(){
 		simulationFinishedFlag = true;
 
-		if(PARALLEL_MODE_ENABLED) {
+		if(BackendSettings.PARALLEL_MODE_ENABLED) {
 			executor.shutdown();
 		}
 
-		if(VISUALISATION_ENABLED){
+		if(BackendSettings.VISUALISATION_ENABLED){
 			logger.close();
 		}
 	}
@@ -202,7 +199,7 @@ public class SimulationManager {
 		checkIfValidEvent(destinationId, message);
 
 		getNode(destinationId).push(message);
-		if (PARALLEL_MODE_ENABLED){
+		if (BackendSettings.PARALLEL_MODE_ENABLED){
 			tempEventList.add(new SimulationEvent(destinationId, message.getTimestamp()));
 		} else {
 			eventList.add(new SimulationEvent(destinationId, message.getTimestamp()));
