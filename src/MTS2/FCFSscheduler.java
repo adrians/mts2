@@ -17,7 +17,7 @@ public class FCFSscheduler implements Scheduler {
 
 	@Override
 	public void init() {
-		this.tasks = new PriorityQueue<Job>(1, new Comparator<Job>()
+		this.tasks = new PriorityQueue<>(1, new Comparator<Job>()
 				{
 			/**
 			 * Sort jobs on timestamps
@@ -25,11 +25,11 @@ public class FCFSscheduler implements Scheduler {
 			 */
 			@Override
 			public int compare(Job o1, Job o2) {
-				if (o1.getTimestamp() < o2.getTimestamp())
+				if (o1.getGeneratedTimestamp() < o2.getGeneratedTimestamp())
 				{
 					return 1;
 				}
-				else if (o1.getTimestamp() > o2.getTimestamp())
+				else if (o1.getGeneratedTimestamp() > o2.getGeneratedTimestamp())
 				{
 					return -1;
 				}
@@ -69,10 +69,10 @@ public class FCFSscheduler implements Scheduler {
 
 	@Override
 	public Job deleteCurrentJob() {
-		if (this.tasks.isEmpty()) {
+		if (tasks.isEmpty()) {
 			return null;
 		}
 
-		return this.tasks.remove();
+		return tasks.remove();
 	}
 }

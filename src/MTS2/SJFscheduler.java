@@ -17,7 +17,7 @@ public class SJFscheduler implements Scheduler {
 
 	@Override
 	public void init() {
-		this.tasks = new PriorityQueue<Job>(1, new Comparator<Job>()
+		this.tasks = new PriorityQueue<>(1, new Comparator<Job>()
 				{
 			/**
 			 * Sort jobs by length
@@ -69,10 +69,10 @@ public class SJFscheduler implements Scheduler {
 
 	@Override
 	public Job deleteCurrentJob() {
-		if (this.tasks.isEmpty()) {
+		if (tasks.isEmpty()) {
 			return null;
 		}
 
-		return this.tasks.remove();
+		return tasks.remove();
 	}
 }

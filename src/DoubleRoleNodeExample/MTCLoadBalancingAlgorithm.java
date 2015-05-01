@@ -2,7 +2,7 @@ package DoubleRoleNodeExample;
 
 import Backend.SimulationManager;
 import MTS2.ExponentialDistribution;
-import MTS2.Job;
+import MTS2.JobMessage;
 
 public class MTCLoadBalancingAlgorithm {
 	
@@ -23,12 +23,12 @@ public class MTCLoadBalancingAlgorithm {
 		//add workers
 		for (int i = 1; i < totalNodes; i++) {
 			DoubleRoleNode worker = new DoubleRoleNode(i, brokerId, totalNodes, false);
-			long workerId = simulation.addNode(worker);
+			simulation.addNode(worker);
 		}
 
 		//add broker that communicates with the distributor
 		SimpleBrokerCommunicator broker = new SimpleBrokerCommunicator(brokerId,
-				Job.class, distributorNodeId);
+				JobMessage.class, distributorNodeId);
 		broker.changeDistribution(new ExponentialDistribution());
 		long nid = simulation.addNode(broker);
 

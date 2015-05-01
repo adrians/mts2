@@ -2,11 +2,7 @@ package DoubleRoleNodeExample;
 
 import Backend.BaseMessage;
 import Backend.SimulationManager;
-import MTS2.DHToverlay;
-import MTS2.Event;
-import MTS2.Job;
-import MTS2.Node;
-import MTS2.Scheduler;
+import MTS2.*;
 
 import java.util.Collection;
 
@@ -59,9 +55,9 @@ public class DoubleRoleNode extends Node {
 			} else if (currentEvent.getType() == FINISHED_TASK){
 				loadStatus--;
 			}
-		} else if (msg instanceof Job) {
-			Job currentJob = (Job)msg;
-			scheduler.schedule(currentJob);
+		} else if (msg instanceof JobMessage) {
+			JobMessage currentJobMsg = (JobMessage)msg;
+			scheduler.schedule(currentJobMsg.getJob());
 		} else {
 			return;
 		}
@@ -101,10 +97,10 @@ public class DoubleRoleNode extends Node {
 						e.printStackTrace();
 					}
 				} else {
-					Job currentJob = null;
+					Job currentJob;
 
 					while ((currentJob = this.scheduler.deleteCurrentJob()) != null) {
-						Job job = new Job(currentJob.getLength(),
+						JobMessage job = new JobMessage(currentJob.getLength(),
 								SimulationManager.getInstance().getSimulationStep() + 1);
 						
 						try {
@@ -125,7 +121,7 @@ public class DoubleRoleNode extends Node {
 			long neighbourId = this.overlay.getNextNeighbour();
 			//the distributorRole node only stores jobs and sends them forward to the worker nodes
 			Job currentJob = this.scheduler.deleteCurrentJob();
-			Job job = new Job(currentJob.getLength(), currentJob.getTimestamp() + 1);
+			JobMessage job = new JobMessage(currentJob.getLength(), currentJob.getGeneratedTimestamp() + 1);
 
 			try {
 				SimulationManager.getInstance().sendMessage(neighbourId, job);

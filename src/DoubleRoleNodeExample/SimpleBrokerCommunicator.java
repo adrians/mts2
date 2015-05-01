@@ -1,7 +1,6 @@
 package DoubleRoleNodeExample;
 
 import Backend.BaseMessage;
-import Backend.SimulationManager;
 import MTS2.ClusterBrokerEvent0;
 import MTS2.ClusterBrokerEvent1;
 import MTS2.Event;
@@ -31,7 +30,7 @@ public class SimpleBrokerCommunicator extends SimpleBroker {
 	
 	@Override
 	protected void processEvent0(ClusterBrokerEvent0 event) {
-		ClusterBrokerEvent0 nextEvent = null;
+		ClusterBrokerEvent0 nextEvent;
 
 		if (event.getTimestamp() >= event.getTotalTime()) {
 			//send finish message to the destination node
@@ -62,7 +61,7 @@ public class SimpleBrokerCommunicator extends SimpleBroker {
 
 	@Override
 	protected void processEvent1(ClusterBrokerEvent1 event) {
-		ClusterBrokerEvent1 nextEvent = null;
+		ClusterBrokerEvent1 nextEvent;
 		
 		if (event.getTotalJobs() <= 0) {
 			//send finish message to the destination node

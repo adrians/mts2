@@ -12,7 +12,7 @@ public class MTS2 {
 
 		long destinationNodeId = 0;
 		long brokerId = totalNodes;
-		SimpleBroker broker = new SimpleBroker(brokerId, Job.class, destinationNodeId);
+		SimpleBroker broker = new SimpleBroker(brokerId, JobMessage.class, destinationNodeId);
 		broker.changeDistribution(new ExponentialDistribution());
 		long nid = simulation.addNode(broker);
 
@@ -20,7 +20,7 @@ public class MTS2 {
 		
 		long currentNodeId = 1;
 		brokerId = nid + 1;
-		RoundRobinBroker broker2 = new RoundRobinBroker(brokerId, totalNodes, Job.class, currentNodeId);
+		RoundRobinBroker broker2 = new RoundRobinBroker(brokerId, totalNodes, JobMessage.class, currentNodeId);
 		simulation.addNode(broker2);
 
 		broker.distributeJobs(totalJobs, 0);

@@ -18,9 +18,9 @@ public class Node extends BaseNode {
 
 	@Override
 	public void processMessage(BaseMessage msg) {
-		if (msg instanceof Job) {
-			Job currentJob = (Job)msg;
-			schedule(currentJob, msg.getTimestamp());
+		if (msg instanceof JobMessage) {
+			JobMessage currentJob = (JobMessage)msg;
+			schedule(currentJob.getJob(), msg.getTimestamp());
 		} else if (msg instanceof Event) {
 			Event currentEvent = (Event)msg;
 			processEvent(currentEvent, msg.getTimestamp());
