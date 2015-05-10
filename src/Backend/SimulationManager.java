@@ -186,6 +186,9 @@ public class SimulationManager {
 		if (message == null) {
 			throw new Exception("Null message found");
 		}
+		if(message.isEnqueued()){
+			throw new Exception("Duplicate message sent");
+		}
 		if ((destinationId >= maxNodeId) || (destinationId < 0)) {
 			throw new Exception("Sent message to unexisting node");
 		}
@@ -197,6 +200,7 @@ public class SimulationManager {
 
 	public void sendMessage (long destinationId, BaseMessage message) throws Exception {
 		checkIfValidEvent(destinationId, message);
+		message.setEnqueued();
 
 		getNode(destinationId).push(message);
 		if (BackendSettings.PARALLEL_MODE_ENABLED){
